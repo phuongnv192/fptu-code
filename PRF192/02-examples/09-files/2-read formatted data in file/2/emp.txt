@@ -1,0 +1,4 @@
+Tran Hoa   |  21  |  500
+Nguyen La |  19  |  600
+Le Canh    |   22  |  400
+ 

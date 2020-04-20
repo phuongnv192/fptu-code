@@ -1,0 +1,22 @@
+1. Using for, while, do while
+loop to print odd numbers 
+from 0 to a
+Where a is input from user.
+
+2. Using switch statement to write
+a program that print out:
+"hello" if user inputs a-h
+"world" if user inputs i-o
+"student" if user inputs p-z
+"unknown" if user inputs other
+characters.
+
+scanf, printf, for, while,
+do while, if else, switch case
+getchar, gets, puts, putchar
+fopen, fclose, fputs, fgets,
+fprintf, fscanf, fgetc, fputc
+array, array of strings
+sqrt, pow, exp, abs, fabs
+
+
