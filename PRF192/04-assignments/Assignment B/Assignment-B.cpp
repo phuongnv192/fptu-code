@@ -29,7 +29,7 @@ void display_full(double total, int k); /* display full table of books */
 void swap(int a, int b); /* swap book at position bkinstck[a] and bkinstck[b] */
 void sortASC(int k); /* sort book in bkinstck[] in ascending order */
 int loadf(int &line, int &k); /* return error code at line number *line when load data from file */
-void loadfile(double &total, int &k); /* load data from file bookstore.txt */
+int loadfile(double &total, int k); /* load data from file bookstore.txt */
 void fexport(double total, int &k); /* Export data to file */
 void fstmax(int k); /* find first max in bkinstck[].price which have k elements and display it */
 void display_fheader(void); /* display the header of find table */
@@ -103,7 +103,7 @@ int main() {
 				break;
 			}
 			case 4: {
-				loadfile(total, k);
+				k = loadfile(total, k);
 				break;
 			}
 			case 5: {
@@ -476,8 +476,9 @@ int loadf(int &line, int &k) { /* return error code at line number *line when lo
 	}
 }
 
-void loadfile(double &total, int &k) { /* load data from file bookstore.txt */
+int loadfile(double &total, int k) { /* load data from file bookstore.txt */
 	int f, line = 0; // error code at [line] when load file. if f = 0 means no error
+	int frstk = k;
 
 	print_space(SPACE_menu/2); // adjust space on the screen.
 	printf("Load data from file bookstore.txt:\n");
@@ -489,7 +490,7 @@ void loadfile(double &total, int &k) { /* load data from file bookstore.txt */
 	
 	if (f == 0) {
 		print_space(SPACE_menu/2); // adjust space on the screen.
-		printf("Load successfully %d books from file bookstore.txt!\n", k);
+		printf("Load successfully %d books from file bookstore.txt!\n", k - frstk);
 	}
 
 	switch (f) {
@@ -506,7 +507,7 @@ void loadfile(double &total, int &k) { /* load data from file bookstore.txt */
 		case 3: {
 			if (line > 3) {
 				print_space(SPACE_menu/2); // adjust space on the screen.
-				printf("Load successfully %d books with: ", k);
+				printf("Load successfully %d books with: ", k - frstk);
 			}
 			printf("[Error] Invalid format (line %d).\n", line);
 			break;
@@ -514,7 +515,7 @@ void loadfile(double &total, int &k) { /* load data from file bookstore.txt */
 		case 4: {
 			if (line > 3) {
 				print_space(SPACE_menu/2); // adjust space on the screen.
-				printf("Load successfully %d books with: ", k);
+				printf("Load successfully %d books with: ", k - frstk);
 			}
 			printf("[Error] Code duplicated (line %d).\n", line);
 			break;
@@ -522,7 +523,7 @@ void loadfile(double &total, int &k) { /* load data from file bookstore.txt */
 		case 5: {
 			if (line > 3) {
 				print_space(SPACE_menu/2); // adjust space on the screen.
-				printf("Load successfully %d books with: ", k);
+				printf("Load successfully %d books with: ", k - frstk);
 			}
 			printf("[Error] Title duplicated (line %d).\n", line);
 			break;
@@ -530,7 +531,7 @@ void loadfile(double &total, int &k) { /* load data from file bookstore.txt */
 		case 6: {
 			if (line > 3) {
 				print_space(SPACE_menu/2); // adjust space on the screen.
-				printf("Load successfully %d books with: ", k);
+				printf("Load successfully %d books with: ", k - frstk);
 			}
 			printf("[Error] Invalid quantity  (line %d).\n", line);
 			break;
@@ -538,12 +539,13 @@ void loadfile(double &total, int &k) { /* load data from file bookstore.txt */
 		case 7: {
 			if (line > 3) {
 				print_space(SPACE_menu/2); // adjust space on the screen.
-				printf("Load successfully %d books with: ", k);
+				printf("Load successfully %d books with: ", k - frstk);
 			}
 			printf("[Error] Invalid price  (line %d).\n", line);
 			break;
 		}
 	}
+	return k; // return new k after load file
 }
 
 void fexport(double total, int &k) { /* Export data to file */
