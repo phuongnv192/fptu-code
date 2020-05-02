@@ -5,7 +5,7 @@
 
 /* Check input int number [min, max] with maximum range-digit */
 int intcheck(int min, int max, int range, char msg[], char err[]) {
-    int num, i, check;
+    int num, i, check, len;
     char *x;
     
 	x = (char *) malloc(range * sizeof(char));
@@ -13,9 +13,10 @@ int intcheck(int min, int max, int range, char msg[], char err[]) {
     	printf("%s", msg);
 		fflush(stdin);
 		scanf("%[^\n]", x);
-		check = 1;
-		if (strlen(x) > 0 && strlen(x) <= range) {  // check validation string
-			for (i = 0; i < strlen(x); i++) {  // check validation int number
+		check = 1; len = strlen(x);
+		if (len > 0 && len <= range) {  // check validation string
+			for (i = 0; i < len; i++) {  // check validation int number
+				if (x[0] == '-') continue;
 				if (x[i] < '0' || x[i] > '9') {
 					check = 0;
 					break;
@@ -46,6 +47,7 @@ double floatcheck(double min, double max, char msg[], char err[]) {
 		check = 1;
 		if (strlen(x) > 0 && strlen(x) < 20) {  // check validation string
 			for (i = 0; i < strlen(x); i++) {  // check validation double number
+				if (x[0] == '-') continue;
 				if (x[i] < '0' || x[i] > '9') {
 					if (x[i] != '.') {
 						check = 0;
@@ -67,7 +69,7 @@ double floatcheck(double min, double max, char msg[], char err[]) {
 int main(){
 	char msg[] = "Enter a int number in range [1,255]: ";
 	char err[] = "Invalid input, please re-enter.\n";
-	int n = intcheck(1, 255, 3, msg, err);
+	int n = intcheck(-98, 255, 3, msg, err);
 	//int n = inputcheck(1, 255, 3, "Enter a number in range [1,255]: ", "Invalid input, please re-enter.\n");
 	printf("%d\n", n);
 	
