@@ -13,7 +13,7 @@
 /*
  * 
  */
-void getch(void);
+void getch(void); /* pauses the Output console until Enter is pressed */
 void buffer(void); /* temp statement to clear buffer */
 int menuselect(void);  /* Display a menu and asks users to select an option */
 int intcheck(int min, int max, int range, char msg[], char err[]); /* Check input int number */
