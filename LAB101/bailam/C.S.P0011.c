@@ -66,7 +66,7 @@ int menuselect(void) {
         printf("2.  Convert octal number to decimal number\n");
         printf("3.  Convert hexadecimal number to decimal number\n");
         printf("4.  Exit\n");
-        printf(" Please choose number (1 – 4): ");
+        printf(" Please choose number (1 - 4): ");
         fflush(stdin);
         scanf("%[^\n]", x); buffer();
         if (strlen(x) == 1 && strcmp(x, "4") <= 0 && strcmp(x, "1") >= 0) {
