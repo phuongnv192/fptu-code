@@ -26,12 +26,17 @@ void menurun(int choice); /* Perform selected function */
 
 int main() {
     int choice;
-
+    char a[4] = "lab", b[11] = "0123456789";
+    printf("'%s'\na = '%s'\nb = '%s'\n", strncpy(a, b, 6), a, b);
+    /*
     while (1) {
+        
         choice = menuselect();
+        
         if (choice == 0) break;
         menurun(choice);
     }
+    */
     return 0;
 }
 
@@ -113,11 +118,21 @@ char* mystrcpy(char *a, const char *b) {
     return (a);
 }
 
+char* mystrncpy(char *des, const char *src, int n) {
+    int i, len;
+
+    len = strlen(des);
+    for (i = 0; i < n; i++) {
+        des[i] = src[i];
+    }
+    if (n > len) des[i] = '\0';
+    return (des);
+}
+
 char* mystrnset(char *str, int ch, int n) {
     int i, len;
 
     len = strlen(str);
-    printf("%d\n", len);
     for (i = 0; i < n; i++) {
         str[i] = 42;
     }
@@ -178,10 +193,97 @@ void runstrcat(void) {
     char a[51], b[51], mid[4], end[4], *x;
     int s, cond, i;
 
-    printf("mystrcat(\"str1\", \"str2\");\n");
+    printf(" mystrcat(\"str1\", \"str2\");\n\n");
 
-    do {
+    do { // x = mystrcat("str1", "str2");
         printf(" x = mystrcat(\"");
+        fflush(stdin);
+        cond = scanline(a, '\"');
+        if (cond == 0) {
+            printf("Invalid input, please re-enter.\n");
+            continue;
+        } else {
+            cond = scanline(mid, '\"');
+            if (cond == 0 || (mystrcmp(mid, ", ") != 0)) {
+                //buffer();
+                printf("Invalid input, please re-enter.\n");
+                continue;
+            } else {
+                cond = scanline(b, '\"');
+                if (cond == 0) {
+                    printf("Invalid input, please re-enter.\n");
+                    continue;
+                } else {
+                    s = scanf("%[^\n]", end);
+                    buffer();
+                    if (s != 1 || (mystrcmp(end, ");") != 0)) {
+                        cond = 0;
+                        printf("Invalid input, please re-enter.\n");
+                    }
+                }
+            }
+        }
+    } while (cond == 0);
+    printf("\n Before:\n str1 = \"%s\"\n", a);
+    printf(" str2 = \"%s\"\n", b);
+    x = mystrcat(a, b);
+    printf("\n After:\n str1 = \"%s\"\n", a);
+    printf(" str2 = \"%s\"\n", b);
+    printf(" x = \"%s\"\n", x);
+}
+
+void runstrcmp(void) {
+    char a[51], b[51], mid[4], end[4];
+    int s, cond, i, x;
+
+    printf(" mystrcmp(\"str1\", \"str2\");\n\n");
+
+    do { // x = mystrcmp("str1", "str2"); 
+        printf(" x = mystrcmp(\"");
+        fflush(stdin);
+        cond = scanline(a, '\"');
+        if (cond == 0) {
+            printf("Invalid input, please re-enter.\n");
+            continue;
+        } else {
+            cond = scanline(mid, '\"');
+            if (cond == 0 || (mystrcmp(mid, ", ") != 0)) {
+                printf("Invalid input, please re-enter.\n");
+                continue;
+            } else {
+                cond = scanline(b, '\"');
+                if (cond == 0) {
+                    printf("Invalid input, please re-enter.\n");
+                    continue;
+                } else {
+                    s = scanf("%[^\n]", end);
+                    buffer();
+                    if (s != 1 || (mystrcmp(end, ");") != 0)) {
+                        cond = 0;
+                        printf("Invalid input, please re-enter.\n");
+                    }
+                }
+            }
+        }
+    } while (cond == 0);
+
+    x = mystrcmp(a, b);
+    printf("\n str1 = \"%s\"\n", a);
+    printf(" str2 = \"%s\"\n", b);
+    printf(" x = %d", x);
+    if (x > 0) printf(" (str1 > str2)\n");
+    else if (x < 0) printf(" (str1 < str2)\n");
+    else printf(" (str1 = str2)\n");
+}
+
+void runstrcpy(void) {
+    char a[51], b[51], mid[4], end[4], *x;
+    int s, cond, i;
+
+    printf(" mystrcpy(\"str1\", \"str2\");\n\n");
+
+    do { // x = mystrcpy("str1", "str2");
+        printf(" x = mystrcpy(\"");
         fflush(stdin);
         cond = scanline(a, '\"');
         if (cond == 0) {
@@ -190,7 +292,6 @@ void runstrcat(void) {
         } else {
             cond = scanline(mid, '\"');
             if (cond == 0 || (mystrcmp(mid, ", ") != 0)) {
-                //buffer();
                 printf("Invalid input2, please re-enter.\n");
                 continue;
             } else {
@@ -209,74 +310,11 @@ void runstrcat(void) {
             }
         }
     } while (cond == 0);
-    printf("\n Before:\n a = \"%s\"\n", a);
-    printf(" b = \"%s\"\n", b);
-    x = mystrcat(a, b);
-    printf("\n After:\n a = \"%s\"\n", a);
-    printf(" b = \"%s\"\n", b);
-    printf(" x = \"%s\"\n", x);
-}
-
-void runstrcmp(void) {
-    char a[51], b[51], mid[4], end[4];
-    int s, cond, i, x;
-
-    printf("mystrcmp(\"str1\", \"str2\");\n");
-
-    do {
-        printf(" x = mystrcmp(\"");
-        fflush(stdin);
-        i = 0;
-        cond = 69;
-        while (1) {
-            fflush(stdin);
-            a[i] = getchar();
-            //printf("a = '%s'\n", a);
-            if (a[i] == '\n') {
-                cond = 0;
-                break;
-            }
-            if (a[i] == '\"') {
-                a[i] = '\0';
-                break;
-            }
-            i++;
-        }
-        if (cond == 0) {
-            printf("Invalid input, please re-enter.\n");
-            continue;
-        } else {
-            i = 0; // mid = , "
-            while (1) {
-                fflush(stdin);
-                mid[i] = getchar();
-                //printf("mid = '%s'\n", mid);
-                if (mid[i] == '\n') {
-                    cond = 0;
-                    break;
-                }
-                if (mid[i] == '\"') break;
-                i++;
-            }
-            if (cond == 0 || (mystrcmp(mid, ", \"") != 0)) {
-                printf("Invalid input, please re-enter.\n");
-                continue;
-            } else { // end = ");
-                s = scanf("%[^\"]%[^\n]", b, end);
-                buffer();
-                if (s == 2 && (mystrcmp(end, "\");") == 0)) {
-                    cond = 1;
-                } else {
-                    cond = 0;
-                    printf("Invalid input, please re-enter.\n");
-                }
-            }
-        }
-
-    } while (cond == 0);
-    x = mystrcmp(a, b);
-    printf("\n a = \"%s\"\n", a);
-    printf(" b = \"%s\"\n", b);
+    printf("\n Before:\n str1 = \"%s\"\n", a);
+    printf(" str2 = \"%s\"\n", b);
+    x = mystrcpy(a, b);
+    printf("\n After:\n str1 = \"%s\"\n", a);
+    printf(" str2 = \"%s\"\n", b);
     printf(" x = \"%s\"\n", x);
 }
 
@@ -295,7 +333,7 @@ void menurun(int choice) { /* Perform selected function */
         }
         case 3:
         {
-            runstrcat();
+            runstrcpy();
             break;
         }
         case 4:
