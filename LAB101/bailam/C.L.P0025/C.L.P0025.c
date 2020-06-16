@@ -39,8 +39,9 @@ int loadusers(struct User u[]); /* Load users.txt */
 void savedata(struct Card c[], struct User u[], int num); /* save data to file */
 int info(struct Card c[], struct User u[]); /* Clean duplicate & match info between to file cards.txt & users.txt */
 void getID(char id[], struct Card c[], int n1); /* get a random ID */
-void inputstr(char str[], int min, int max, char msg[], char err[]); /* input a string & check */
+void inputPIN(char pin[]); /* input PIN & check */
 void cfPIN(char pin[], char msg[]); /* confirm PIN again */
+void inputName(char name[]); /* input a string & check */
 void inputMT(char mt[]); /* input money type & check */
 void reg(struct Card c[], struct User u[], int *num); /* Register new account */
 int menuATM(char msg1[], char msg2[], char msg3[]); /* Display a menu with 3 option */
@@ -268,23 +269,28 @@ void getID(char id[], struct Card c[], int n1) {
     } while (i != n1);
 }
 
-/* input a string & check */
-void inputstr(char str[], int min, int max, char msg[], char err[]) {
+/* input PIN & check */
+void inputPIN(char pin[]) {
     char *strtemp;
-    int len;
+    int i;
 
-    strtemp = (char *) calloc(max + 1, sizeof (char));
+    strtemp = (char *) calloc(7, sizeof (char));
     while (1) {
-        printf("%s", msg);
+        printf("PIN: ");
         fflush(stdout);
         scanf("%[^\n]", strtemp);
         buffer();
-        len = strlen(strtemp);
-        if (len >= min && len <= max) {
-            strcpy(str, strtemp);
-            break;
+        if (strlen(strtemp) == 6) {
+            for (i = 0; i < 6; i++) {
+                if (strtemp[i] < '0' || strtemp[i] > '9') break; // if it's not a number ~> break
+            }
+            if (i == 6) { // all are numbers
+                strcpy(pin, strtemp);
+                break; //break while (1)
+            }
+
         }
-        printf("%s", err);
+        printf("Invalid PIN, please re-enter.\n");
     }
     free(strtemp);
 }
@@ -303,6 +309,27 @@ void cfPIN(char pin[], char msg[]) {
         printf("Invalid PIN, please re-enter.\n");
     }
     free(cfp);
+}
+
+/* input a string & check */
+void inputName(char name[]) {
+    char *strtemp;
+    int len;
+
+    strtemp = (char *) calloc(31, sizeof (char));
+    while (1) {
+        printf("Account Name: ");
+        fflush(stdout);
+        scanf("%[^\n]", strtemp);
+        buffer();
+        len = strlen(strtemp);
+        if (len > 0 && len <= 30) {
+            strcpy(name, strtemp);
+            break;
+        }
+        printf("Invalid Account Name, please re-enter.\n");
+    }
+    free(strtemp);
 }
 
 /* input money type & check */
@@ -335,9 +362,9 @@ void reg(struct Card c[], struct User u[], int *num) {
     strcpy(u[*num].ID, newid);
     printf("ID: %s\n", newid);
 
-    inputstr(c[*num].PIN, 6, 6, "PIN: ", "Invalid PIN, please re-enter.\n");
+    inputPIN(c[*num].PIN);
     cfPIN(c[*num].PIN, "Confirm your PIN: ");
-    inputstr(u[*num].AccName, 1, 30, "Account Name: ", "Invalid Account Name, please re-enter.\n");
+    inputName(u[*num].AccName);
     u[*num].Balance = floatcheck(0, 999999999, "Balance: ", "Invalid balance, please re-enter.\n");
     inputMT(u[*num].mType);
     (*num)++;
