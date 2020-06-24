@@ -112,7 +112,7 @@ int zellerjulian(int d, int m, int y) {
 
 void dayofweek(int d, int m, int y) {
     int check, weekday;
-
+    
     // 2/9/1752 ~> 14/9/1752
     // check = 0 ~> use Julian, check = 1 ~> use Gregorian
     if (y > 1752) check = 1;
