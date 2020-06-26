@@ -14,7 +14,7 @@
 /*
  * 
  */
-int getch(); /* pauses the Output console until Enter is pressed */
+int getch(); /* pauses the Output console until Enter is pressed & clear buffer */
 int menuselect(); /* Display a menu and asks users to select an option */
 void convert(char mode[], int length, char bank[]); /* Enter, convert & display a number to decimal number */
 
@@ -45,7 +45,7 @@ int main() {
     return 0;
 }
 
-/* Pauses the Output console until Enter or Esc is pressed */
+/* Pauses the Output console until Enter or Esc is pressed & clear buffer */
 int getch() {
     char c;
     do {

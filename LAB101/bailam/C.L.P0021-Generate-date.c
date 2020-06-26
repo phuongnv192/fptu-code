@@ -12,47 +12,40 @@
 /*
  * 
  */
-int getch(void); /* pauses the Output console until Enter is pressed */
-void buffer(void); /* temp statement to clear buffer */
-int menuselect(void); /* Display a menu and asks users to select an option */
-int intcheck(int min, int max, int range, char msg[], char err[]); /* Check input int number */
-int datecheck(int d, int m, int y);
-void dateinput(int *d, int *m, int *y);
-int zellergreg(int d, int m, int y);
-int zellerjulian(int d, int m, int y);
-void dayofweek(int d, int m, int y);
-int dayofyear(int d, int m, int y);
-void dateprocess(void);
+int buffer(void); /* pauses the Output console until Enter is pressed & clear buffer */
+int datecheck(int d, int m, int y); /* check validation date format dd/mm/yyyy */
+void dateinput(int *d, int *m, int *y); /* input date & check validation */
+int zellergreg(int d, int m, int y); /* calculate weekday use Zeller's algorithm for Gregorian calendar */
+int zellerjulian(int d, int m, int y); /* calculate weekday use Zeller's algorithm for Julian calendar */
+void dayofweek(int d, int m, int y); /* Calculate day of week */
+int dayofyear(int d, int m, int y); /* Calculate day of year */
+void dateprocess(void); /* Calculate date process */
 
 int main() {
-    int choice;
 
     while (1) {
         dateprocess();
-        if (getch() == 27) break;
+        printf("\nPress Enter to continue, press Esc to exit");
+        if (buffer() == 27) break;
+        printf("\n");
     }
-
     return 0;
 }
 
-/* Pauses the Output console until Enter is pressed */
-int getch(void) {
+/* Pauses the Output console until Enter is pressed & clear buffer */
+int buffer(void) {
     char ch;
+    
     while ((ch = getchar()) != '\n' && ch != EOF && ch != 27);
     return (ch);
 }
 
-/* temp statement to clear buffer */
-void buffer(void) {
-    char temp;
-    scanf("%c", &temp);
-}
-
+/* check validation date format dd/mm/yyyy */
 int datecheck(int d, int m, int y) {
     int dmax[12] = {31, 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     int leap;
 
-    if (y < 0 || y > 9999) return 0;
+    if (y < 0 || y > 9999) return 0; // invalid year
     if (y % 4 != 0 || (y % 100 == 0 && y % 400 != 0)) {
         dmax[1] = 28; // normal February have 28 days
         leap = 0; // it's not a leap year
@@ -60,21 +53,18 @@ int datecheck(int d, int m, int y) {
         leap = 1; // it's a leap year
         dmax[1] = 29; // February in leap year have 29 days
     }
-    if (m < 0 || m > 12) return 0;
-    if (d < 0 || d > dmax[m - 1]) return 0;
-    if (y = 1752 && m == 9 && d > 2 && d < 14) return 0;
-    if (leap == 0) return 1;
-    if (leap == 1) return 2;
+    if (m < 0 || m > 12) return 0; // invalid month
+    if (d < 0 || d > dmax[m - 1]) return 0; // invalid date
+    if (y = 1752 && m == 9 && d > 2 && d < 14) return 0; // there are no day between 2/9/1752-14/9/1752
+    if (leap == 0) return 1; // valid date format & is not a leap year
+    if (leap == 1) return 2; // valid date format & is a leap year
 }
 
+/* input date & check validation */
 void dateinput(int *d, int *m, int *y) {
-    char *dchar, *mchar, *ychar, *a;
-    int leap, check, x;
-    int datemax[12] = {31, 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    char *a;
+    int check, x;
 
-    dchar = (char *) calloc(3, sizeof (char));
-    mchar = (char *) calloc(3, sizeof (char));
-    ychar = (char *) calloc(5, sizeof (char));
     a = (char *) calloc(11, sizeof (char));
     while (1) {
         printf("Please enter a date (dd/mm/yyyy): ");
@@ -92,6 +82,7 @@ void dateinput(int *d, int *m, int *y) {
     }
 }
 
+/* calculate weekday use Zeller's algorithm for Gregorian calendar */
 int zellergreg(int d, int m, int y) {
     int weekday;
     int z[12] = {13, 14, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
@@ -101,6 +92,7 @@ int zellergreg(int d, int m, int y) {
     return (weekday);
 }
 
+/* calculate weekday use Zeller's algorithm for Julian calendar */
 int zellerjulian(int d, int m, int y) {
     int weekday;
     int z[12] = {13, 14, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
@@ -110,11 +102,12 @@ int zellerjulian(int d, int m, int y) {
     return (weekday);
 }
 
+/* Calculate day of week */
 void dayofweek(int d, int m, int y) {
     int check, weekday;
-    
-    // 2/9/1752 ~> 14/9/1752
-    // check = 0 ~> use Julian, check = 1 ~> use Gregorian
+
+    /* 01/01/0001 ~> 2/9/1752: use Julian Calendar - check = 1
+     * 14/09/1752 ~> now: use Gregorian Calendar - check = 0 */
     if (y > 1752) check = 1;
     else if (y == 1752) {
         if (m > 9) check = 1;
@@ -164,6 +157,7 @@ void dayofweek(int d, int m, int y) {
     }
 }
 
+/* Calculate day of year */
 int dayofyear(int d, int m, int y) {
     int dmax[12] = {31, 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     int i, sum;
@@ -177,13 +171,16 @@ int dayofyear(int d, int m, int y) {
     return sum;
 }
 
+/* Calculate date process */
 void dateprocess(void) {
-    int date, month, year, z;
+    int date, month, year, z, weekcounts;
 
     dateinput(&date, &month, &year);
     z = dayofyear(date, month, year);
     printf("Day of year: %d\n", z);
     printf("Day of week: ");
     dayofweek(date, month, year);
-    printf("\nWeek of year: %d\n", z / 7);
+    if (z % 7 == 0) weekcounts = z/7;
+    else weekcounts = z/7 +1;
+    printf("\nWeek of year: %d\n", weekcounts);
 }

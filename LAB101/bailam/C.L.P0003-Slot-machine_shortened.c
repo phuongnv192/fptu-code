@@ -33,11 +33,16 @@ int main() {
             
         } else { // Cash out and exit game
             printf("Thank you for playing, You end with $%.2f!\n", balance);
-            savegame(10); // reset money to 10$
+            savegame(0);
             break; // break while (1)
         }
-        printf("\nPress Enter to continue.");
-        buffer();
+		if (balance < 0.25) { // out of money ~> quit
+			printf("\nYou are run out of your money, good bye!\n");
+			break;
+		} else {
+			printf("\nPress Enter to continue.");
+			buffer();
+		}   
     }
     return 0;
 }
@@ -59,6 +64,7 @@ float loadbalance() {
         bl = 10;
     }
     fscanf(fp, "%f", &bl); 
+	if (bl < 0.25) bl = 10;
     fclose(fp);
     return bl;
 }

@@ -13,7 +13,7 @@
 /*
  * 
  */
-void getch(); /* pauses the Output console until Enter is pressed */
+void buffer(); /* pauses the Output console until Enter is pressed & clear buffer */
 int menuselect(); /* Display a menu and asks users to select an option */
 int intcheck(int min, int max, char msg[], char err[]); /* Check input int number */
 void datedata(); /* Processing date data */
@@ -29,13 +29,13 @@ int main() {
         else if (choice == 1) datedata(); // process date data
         else chardata(); // process char data
         printf("\nPress Enter to continue.");
-        getch();
+        buffer();
     }
     return 0;
 }
 
-/* Pauses the Output console until Enter is pressed */
-void getch() {
+/* Pauses the Output console until Enter is pressed & clear buffer */
+void buffer() {
     while (getchar() != '\n');
 }
 
@@ -48,7 +48,7 @@ int intcheck(int min, int max, char msg[], char err[]) {
         fflush(stdout);
         num = -1;
         scanf("%d", &num);
-        getch();
+        buffer();
         if (num >= min && num <= max) return num;
         printf("%s", err);
     }
@@ -69,10 +69,10 @@ int menuselect() {
         fflush(stdout);
         a = -1;
         scanf("%d", &a);
-        getch();
+        buffer();
         if (a >= 1 && a <= 3) return a;
         printf("Invalid choice, press Enter to continue.");
-        getch();
+        buffer();
     }
 }
 
@@ -82,7 +82,7 @@ void datedata() {
 
     printf("Input data:\n");
     year = intcheck(1, 9999, " Enter year: ", " Invalid year, please re-enter.\n");
-    if (year % 4 != 0 || (year % 100 == 0 && year % 400 != 0)) leap = 0; // it's not a leap yea
+    if (year % 4 != 0 || (year % 100 == 0 && year % 400 != 0)) leap = 0; // it's not a leap year
     else leap = 1; // leap = 1 mean it's a leap year
     month = intcheck(1, 12, " Enter month: ", " Invalid month, please re-enter.\n");
     if (month == 4 || month == 6 || month == 9 || month == 11) datemax = 30;
@@ -102,7 +102,7 @@ void chardata() {
     printf("Input 2 characters: ");
     fflush(stdout);
     scanf("%c%c", &ch1, &ch2);
-    getch();
+    buffer();
     if (ch1 > ch2) for (i = ch1; i >= ch2; i--) printf(" %c: %d\n", i, i);
     else for (i = ch2; i >= ch1; i--) printf(" %c: %d\n", i, i);
 }
