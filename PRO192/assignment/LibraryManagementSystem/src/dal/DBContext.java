@@ -336,6 +336,8 @@ public class DBContext {
                 booklendings.add(bl);
                 s.getLendings().add(bl);
                 ab.getLendings().add(bl);
+                s.updateStatus();
+                exportStudents();
                 exportBookLendings();
                 exportaBooks();
                 raw = bfr.readLine();
@@ -372,6 +374,8 @@ public class DBContext {
                 FineTransaction ftrs = new FineTransaction(lending, amount, date);
                 transactions.add(ftrs);
                 lending.getFines().add(ftrs);
+                lending.getStudent().updateStatus();
+                exportStudents();
                 raw = bfr.readLine();
             }
         } catch (FileNotFoundException ex) {

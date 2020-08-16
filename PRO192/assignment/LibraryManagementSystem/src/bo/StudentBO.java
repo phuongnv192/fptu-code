@@ -48,7 +48,7 @@ public class StudentBO implements MyStudentBO {
 
     @Override
     public void showCatalogue() {
-        System.out.println("Book ID\tBook Name\tAuthor\tPrice\tAvailable");
+        System.out.println("\nBook ID\tBook Name\tAuthor\tPrice\tAvailable");
         TreeMap<Book, ArrayList<aBook>> booklist = db.getBooklist();
         for (Map.Entry<Book, ArrayList<aBook>> entry : booklist.entrySet()) {
             Book key = entry.getKey();
@@ -76,8 +76,9 @@ public class StudentBO implements MyStudentBO {
 
     @Override
     public void displayBorrowing() {
+        System.out.println();
         if (student.isNoBorrowing()) {
-            System.err.println("You are borrowing no books.");
+            System.out.println("You are borrowing no books.");
         } else {
             System.out.println("Book ID\tBook Name\tPrice\tBorrow date\tDue date\tStatus");
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -98,14 +99,14 @@ public class StudentBO implements MyStudentBO {
 
     @Override
     public void borrowBook() {
-        int totalBorrowing = currentLendings.get(LendingStatus.LENDING).size();
-        if (totalBorrowing >= 10) {
-            System.err.println("You can only borrow 10 books at the time.");
+        System.out.println();
+        if (currentLendings != null && currentLendings.get(LendingStatus.LENDING).size() >= 10) {
+            System.out.println("You can only borrow 10 books at the time.");
         } else {
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             Book book = inputBookID();
             if (student.isBookBorrowing(book)) {
-                System.err.println("You already borrow this book.");
+                System.out.println("You already borrow this book.");
             } else {
                 aBook ab = db.getAvailableAbook(book);
                 if (ab != null) {
@@ -113,6 +114,7 @@ public class StudentBO implements MyStudentBO {
                     BookLending bl = new BookLending(student, ab, borrowDate);
                     db.addBookLending(bl);
                     db.exportaBooks(); // FILE: change from available ~> borrowed
+                    currentLendings = student.getCurrentLendings();
                     System.out.println();
                     System.out.println("Borrow successful book: ");
                     System.out.println("Book ID: " + book.getId());
@@ -121,7 +123,7 @@ public class StudentBO implements MyStudentBO {
                     System.out.println("Borrow date: " + sdf.format(borrowDate));
                     System.out.println("Due date: " + sdf.format(bl.getDueDate()));
                 } else {
-                    System.err.println("The are no book available with id " + book.getId() + ".");
+                    System.out.println("The are no book available with id " + book.getId() + ".");
                 }
             }
         }
@@ -129,10 +131,11 @@ public class StudentBO implements MyStudentBO {
 
     @Override
     public void renewBook() {
+        System.out.println();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         Book book = inputBookID();
         if (student.isNoBorrowing()) {
-            System.err.println("You are borrowing no books.");
+            System.out.println("You are borrowing no books.");
         } else {
             BookLending booklending = null;
             ArrayList<BookLending> borrowing = currentLendings.get(LendingStatus.LENDING);
@@ -143,19 +146,19 @@ public class StudentBO implements MyStudentBO {
                 }
             }
             if (booklending == null) {
-                System.err.println("You are not borrow any book with id: " + book.getId() + ".");
+                System.out.println("You are not borrow any book with id: " + book.getId() + ".");
             } else {
                 Date borrowDate = booklending.getBorrowDate();
                 Date dueDate = booklending.getDueDate();
                 Date newDue = booklending.increase7days(dueDate);
                 long diff = newDue.getTime() - borrowDate.getTime(); // miliseconds
-                int dateDiff = (int) diff / (24 * 60 * 60 * 1000);
+                int dateDiff = (int) (diff / (24 * 60 * 60 * 1000));
                 if (dateDiff <= 28) {
                     booklending.setDueDate(newDue);
                     db.exportBookLendings(); // FILE: change dueDate
                     System.out.println("Renew successful.");
                 } else {
-                    System.err.println("You can't borrow a book more than 4 weeks.");
+                    System.out.println("You can't borrow a book more than 4 weeks.");
                 }
             }
         }
@@ -163,9 +166,10 @@ public class StudentBO implements MyStudentBO {
 
     @Override
     public void returnBook() {
+        System.out.println();
         Book book = inputBookID();
         if (student.isNoBorrowing()) {
-            System.err.println("You are borrowing no books.");
+            System.out.println("You are borrowing no books.");
         } else {
             BookLending bookLending = null;
             for (Map.Entry<LendingStatus, ArrayList<BookLending>> entry : currentLendings.entrySet()) {
@@ -184,7 +188,7 @@ public class StudentBO implements MyStudentBO {
                 }
             }
             if (bookLending == null) {
-                System.err.println("You are not borrow any book with id: " + book.getId() + ".");
+                System.out.println("You are not borrow any book with id: " + book.getId() + ".");
             } else {
                 if (bookLending.getStatus().equals(LendingStatus.LENDING)) {
                     Date returnDate = Calendar.getInstance().getTime();
@@ -231,7 +235,7 @@ public class StudentBO implements MyStudentBO {
                     break;
                 }
                 default: {
-                    System.err.println("Enter again.");
+                    System.out.println("Enter again.");
                 }
             }
         }
@@ -239,9 +243,10 @@ public class StudentBO implements MyStudentBO {
 
     @Override
     public void payFineLost() {
+        System.out.println();
         ArrayList<BookLending> lost = currentLendings.get(LendingStatus.LOST);
         System.out.println("Replacement fine = book price + overdue fine");
-        System.out.println("   Overdue fine: 5000 VND/day (Maximum = book price)");
+        System.out.println("   Overdue fine: 5000 VND/day (Maximum = book price)\n");
         System.out.println("Book ID\tBook name\tPrice\tBorrow date\tDue date\tDays overdue\tTotal fine");
         HashMap<BookLending, Double> finelist = new HashMap<>();
         Date now = Calendar.getInstance().getTime();
@@ -288,7 +293,7 @@ public class StudentBO implements MyStudentBO {
                     break;
                 }
                 default: {
-                    System.err.println("Enter again.");
+                    System.out.println("Enter again.");
                 }
             }
         }
@@ -303,7 +308,7 @@ public class StudentBO implements MyStudentBO {
             if (book != null) {
                 return book;
             } else {
-                System.err.println("Book id is not exists.");
+                System.out.println("Book id is not exists.");
             }
         } while (true);
     }

@@ -37,7 +37,7 @@ public class Student extends User {
         updateStatus();
     }
 
-    private void updateStatus() {
+    public void updateStatus() {
         if (lendings.isEmpty()) {
             status = StudentStatus.ACTIVE;
         } else {
@@ -48,7 +48,7 @@ public class Student extends User {
             int total = borrowing + overdue + lost;
             if (borrowing == 0 && overdue == 0 && lost > 0) {
                 status = StudentStatus.BLACKLISTED;
-            } else if (borrowing > 0 && overdue == 0 && lost == 0) {
+            } else if (overdue == 0 && lost == 0) {
                 status = StudentStatus.ACTIVE;
             } else {
                 status = StudentStatus.WARNING;
@@ -116,10 +116,14 @@ public class Student extends User {
 
     public Boolean isNoBorrowing() {
         HashMap<LendingStatus, ArrayList<BookLending>> current = getCurrentLendings();
-        int numLending = current.get(LendingStatus.LENDING).size()
-                + current.get(LendingStatus.OVERDUE).size()
-                + current.get(LendingStatus.LOST).size();
-        return numLending == 0;
+        if (current == null) {
+            return true;
+        } else {
+            int numLending = current.get(LendingStatus.LENDING).size()
+                    + current.get(LendingStatus.OVERDUE).size()
+                    + current.get(LendingStatus.LOST).size();
+            return numLending == 0;
+        }
     }
 
     public ArrayList<BookLending> getLendings() {

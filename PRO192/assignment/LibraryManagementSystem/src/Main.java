@@ -31,10 +31,8 @@ public class Main {
             System.out.println("1. Student");
             System.out.println("2. Librarian");
             System.out.println("0. Exit");
-                    
             System.out.print("Your choice: ");
             choice = scanner.nextLine();
-            System.out.println();
             switch (choice) {
                 case "1": {
                     studentMenu.loginMenu();
@@ -49,8 +47,11 @@ public class Main {
                     break;
                 }
                 default: {
-                    System.err.println("Enter again.");
+                    System.out.println("Enter again.");
                 }
+            }
+            if (!exit) {
+                System.out.println();
             }
         }
     }

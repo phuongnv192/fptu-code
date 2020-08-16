@@ -29,6 +29,7 @@ public class LibrarianMenu {
 
     public void loginMenu() {
         Boolean exit = false;
+        System.out.println();
         while (!exit) {
             System.out.println("_____Librarian Login_____");
             System.out.println("1. Login to an existing account");
@@ -55,17 +56,20 @@ public class LibrarianMenu {
                     break;
                 }
                 default: {
-                    System.err.println("Enter again.");
+                    System.out.println("Enter again.");
                 }
             }
-            System.out.println();
+            if (!exit) {
+                System.out.println();
+            }
         }
     }
 
     private void login() {
+        System.out.println();
         ArrayList<Librarian> librarians = db.getLibrarians();
         if (librarians.isEmpty()) {
-            System.err.println("No account found, create a new one.");
+            System.out.println("No account found, create a new one.");
         } else {
             int failCount = 0;
             Boolean valid = false;
@@ -82,7 +86,7 @@ public class LibrarianMenu {
                     }
                 }
                 if (!valid) {
-                    System.err.println("Invalid account information.");
+                    System.out.println("Invalid account information.");
                     failCount++;
                 }
             }
@@ -99,7 +103,7 @@ public class LibrarianMenu {
     }
 
     private void register() {
-        System.out.print("Librarian ID: ");
+        System.out.print("\nLibrarian ID: ");
         String lid = scanner.nextLine().toLowerCase();
         System.out.print("First name: ");
         String firstName = scanner.nextLine();
@@ -110,7 +114,7 @@ public class LibrarianMenu {
             System.out.print("Phone number: ");
             phoneNumber = scanner.nextLine();
             if (!isValidPhonenumber(phoneNumber)) {
-                System.err.println("Invalid phone number.");
+                System.out.println("Invalid phone number.");
             }
         } while (!isValidPhonenumber(phoneNumber));
         String username = firstName;
@@ -126,7 +130,7 @@ public class LibrarianMenu {
             System.out.print("Password: ");
             password = scanner.nextLine().trim();
             if (password.isEmpty()) {
-                System.err.println("Password can not e empty.");
+                System.out.println("Password can not e empty.");
             }
         } while (password.isEmpty());
         Account account = new Account(username, password);
@@ -136,19 +140,20 @@ public class LibrarianMenu {
     }
 
     private void resetPassword() {
-        System.out.print("Librarian id: ");
+        System.out.print("\nLibrarian id: ");
         String lid = scanner.nextLine();
         Librarian l = db.getLibrarian(lid);
         if (l != null) {
             l.resetPW();
             db.exportLibrarians();
         } else {
-            System.err.println("Invalid id");
+            System.out.println("Invalid id");
         }
     }
 
     private void mainMenu() {
         Boolean exit = false;
+        System.out.println();
         while (!exit) {
             System.out.println("_____Librarian Menu_____");
             System.out.println("1. Add book to storage");
@@ -170,10 +175,12 @@ public class LibrarianMenu {
                     break;
                 }
                 default: {
-                    System.err.println("Enter again.");
+                    System.out.println("Enter again.");
                 }
             }
-            System.out.println();
+            if (!exit) {
+                System.out.println();
+            }
         }
     }
     

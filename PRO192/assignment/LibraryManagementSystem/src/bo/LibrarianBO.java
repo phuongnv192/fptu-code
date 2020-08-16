@@ -34,7 +34,7 @@ public class LibrarianBO implements MyLibrarianBO {
         String author;
         double price;
         int quantity;
-        System.out.println("_____Add new book_____");
+        System.out.println("\n_____Add new book_____");
         System.out.print("Book id: ");
         id = scanner.nextLine();
         System.out.print("Book name: ");
@@ -56,7 +56,7 @@ public class LibrarianBO implements MyLibrarianBO {
 
     @Override
     public void displaySummary() {
-        System.out.println("ID\tName\tPrice\tQuantity\tAvailable\tBorrowed\tLost");
+        System.out.println("\nID\tName\tPrice\tQuantity\tAvailable\tBorrowed\tLost");
         int availableSum = 0;
         int borrowedSum = 0;
         int lostSum = 0;

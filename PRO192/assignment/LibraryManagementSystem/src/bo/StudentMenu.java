@@ -29,6 +29,7 @@ public class StudentMenu {
 
     public void loginMenu() {
         Boolean exit = false;
+        System.out.println();
         while (!exit) {
             System.out.println("_____Student Login_____");
             System.out.println("1. Login to an existing account");
@@ -55,18 +56,20 @@ public class StudentMenu {
                     break;
                 }
                 default: {
-                    System.err.println("Enter again.");
+                    System.out.println("Enter again.");
                 }
             }
-            System.out.println();
+            if (!exit) {
+                System.out.println();
+            }
         }
     }
 
-
     private void login() {
         ArrayList<Student> students = db.getStudents();
+        System.out.println();
         if (students.isEmpty()) {
-            System.err.println("No account found, create a new one.");
+            System.out.println("No account found, create a new one.");
         } else {
             int failCount = 0;
             Boolean valid = false;
@@ -84,7 +87,7 @@ public class StudentMenu {
                     }
                 }
                 if (!valid) {
-                    System.err.println("Invalid account information.");
+                    System.out.println("Invalid account information.");
                     failCount++;
                 }
             }
@@ -114,7 +117,7 @@ public class StudentMenu {
     }
 
     private void register() {
-        System.out.print("Student ID: ");
+        System.out.print("\nStudent ID: ");
         String lid = scanner.nextLine().toLowerCase();
         System.out.print("First name: ");
         String firstName = scanner.nextLine();
@@ -125,7 +128,7 @@ public class StudentMenu {
             System.out.print("Phone number: ");
             phoneNumber = scanner.nextLine();
             if (!isValidPhonenumber(phoneNumber)) {
-                System.err.println("Invalid phone number.");
+                System.out.println("Invalid phone number.");
             }
         } while (!isValidPhonenumber(phoneNumber));
         String username = firstName;
@@ -141,7 +144,7 @@ public class StudentMenu {
             System.out.print("Password: ");
             password = scanner.nextLine().trim();
             if (password.isEmpty()) {
-                System.err.println("Password can not e empty.");
+                System.out.println("Password can not e empty.");
             }
         } while (password.isEmpty());
         Account account = new Account(username, password);
@@ -151,19 +154,20 @@ public class StudentMenu {
     }
 
     private void resetPassword() {
-        System.out.print("Student id: ");
+        System.out.print("\nStudent id: ");
         String sid = scanner.nextLine();
         Student s = db.getStudent(sid);
         if (s != null) {
             s.resetPW();
             db.exportStudents();
         } else {
-            System.err.println("Invalid id");
+            System.out.println("Invalid id");
         }
     }
 
     private void activeMenu() {
         Boolean exit = false;
+        System.out.println();
         while (!exit) {
             System.out.println("_____Student Menu_____");
             System.out.println("1. Show book catalogue");
@@ -192,6 +196,7 @@ public class StudentMenu {
                     break;
                 }
                 case "5": {
+                    System.out.println();
                     studentBO.renewBook();
                     break;
                 }
@@ -200,18 +205,21 @@ public class StudentMenu {
                     break;
                 }
                 default: {
-                    System.err.println("Enter again.");
+                    System.out.println("Enter again.");
                 }
             }
-            System.out.println();
+            if (!exit) {
+                System.out.println();
+            }
         }
     }
 
     private void warningMenu() {
         Boolean exit = false;
+        System.out.println();
         while (!exit) {
             System.out.println("_____Student Menu_____");
-            System.err.println("WARNING: You must pay fine for overdue/ lost books before borrow new book");
+            System.out.println("WARNING: You must pay fine for overdue/ lost books before borrow new book");
             System.out.println("   If you already finish pay fine, please login again).");
             System.out.println("1. Display all books your are borrowing");
             System.out.println("2. Return a book");
@@ -236,18 +244,21 @@ public class StudentMenu {
                     break;
                 }
                 default: {
-                    System.err.println("Enter again.");
+                    System.out.println("Enter again.");
                 }
             }
-            System.out.println();
+            if (!exit) {
+                System.out.println();
+            }
         }
     }
 
     private void blacklistedMenu() {
         Boolean exit = false;
+        System.out.println();
         while (!exit) {
             System.out.println("_____Student Menu_____");
-            System.err.println("WARNING: You must pay fine for lost books before borrow new book");
+            System.out.println("WARNING: You must pay fine for lost books before borrow new book");
             System.out.println("(If you already finish pay fine, please login again).");
             System.out.println("1. Pay fine for lost books");
             System.out.println("0. Logout");
@@ -263,10 +274,12 @@ public class StudentMenu {
                     break;
                 }
                 default: {
-                    System.err.println("Enter again.");
+                    System.out.println("Enter again.");
                 }
             }
-            System.out.println();
+            if (!exit) {
+                System.out.println();
+            }
         }
     }
 
