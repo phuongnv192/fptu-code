@@ -1,18 +1,24 @@
-SELECT * 
-FROM [employees]
+(
+	SELECT
+		[employeeNumber],
+		[lastName],
+		[firstName],
+		[email],
+		[officeCode],
+		[reportsTo],
+		[jobTitle]
+	FROM [employees]
+)
 EXCEPT
 (
-SELECT DISTINCT
-	[employees].[employeeNumber],
-	[employees].[lastName],
-	[employees].[firstName],
-	[employees].[email],
-	[employees].[officeCode],
-	[employees].[reportsTo],
-	[employees].[jobTitle]
-FROM 
-	[customers]
-	INNER JOIN [employees]
-	ON [customers].[salesRepEmployeeNumber] = [employees].[employeeNumber]
-)
-
+	SELECT
+		[employeeNumber],
+		[lastName],
+		[firstName],
+		[email],
+		[officeCode],
+		[reportsTo],
+		[jobTitle]
+	FROM [employees]
+	WHERE [employeeNumber] = ANY (SELECT DISTINCT [salesRepEmployeeNumber] FROM [customers])
+);

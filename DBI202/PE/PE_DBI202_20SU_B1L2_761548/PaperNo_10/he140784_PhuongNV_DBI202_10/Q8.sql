@@ -5,8 +5,7 @@ AS
 BEGIN
 	SET @numberOfOrders = 
 	(
-	SELECT 
-		COUNT([customerNumber]) AS NumberOfOrders
+	SELECT COUNT(*)
 	FROM [orders]
 	GROUP BY [customerNumber]
 	HAVING [customerNumber] = @customerNumber

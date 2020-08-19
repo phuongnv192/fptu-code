@@ -1,15 +1,27 @@
-SELECT
-	[products].[productCode],
-	[products].[productName],
-	[products].[productCategory]
-FROM 
-	[products]
+WITH [raw_table] AS
+(
+	SELECT
+		[orderNumber],
+		[orderdetails].[productCode],
+		[productName],
+		[productCategory],
+		[quantityOrdered],
+		([priceEach] - [buyPrice]) * [quantityOrdered] AS [profit]
+	FROM 
+		[orderdetails]
+		INNER JOIN [products]
+		ON [orderdetails].[productCode] = [products].[productCode]
+	WHERE [productCategory] = 'Planes'
+)
 
-SELECT * FROM orderdetails
-SELECT 
+SELECT
 	[productCode],
-	COUNT([productCode]) AS [numberOfOrders],
-	SUM([quantityOrdered]) AS [totalQuantityOrdered]
-FROM orderdetails
-GROUP BY [productCode]
-ORDER BY [productCode]
+	[productName],
+	[productCategory],
+	COUNT(*) AS [numberOfOrders],
+	COUNT([orderNumber]) AS [numberOfCustomers],
+	SUM([quantityOrdered]) AS [totalQuantityOrdered],
+	SUM([profit]) AS [totalProfit]
+FROM [raw_table]
+GROUP BY [productCode], [productName], [productCategory]
+ORDER BY [totalProfit] DESC;

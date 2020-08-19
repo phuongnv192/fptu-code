@@ -1,4 +1,4 @@
-SELECT
+SELECT 
 	[orderNumber],
 	[productCode],
 	[quantityOrdered],
